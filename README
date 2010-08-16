@@ -1,0 +1,5 @@
+#Run this to install
+
+mvn install
+mvn exec:java -Dexec.mainClass=dk.babra.couchDo.App
+
