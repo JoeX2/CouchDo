@@ -1,5 +1,9 @@
 #Run this to install
 
+git clone git@github.com:JoeX2/CouchDo.git
+
 mvn install
 mvn exec:java -Dexec.mainClass=dk.babra.couchDo.App
 
+git commit
+git push
