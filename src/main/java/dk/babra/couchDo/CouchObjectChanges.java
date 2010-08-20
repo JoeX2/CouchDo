@@ -32,8 +32,9 @@ public class CouchObjectChanges extends CouchObject{
 			changedObject = getChangeFromDatabase();
 		}
 		
-		//If both proves without result, wait for a change
-		if ( changedObject == null ) {
+		//If both proves without result, wait for a change. 
+		//If the database returns with no change try again.
+		while ( changedObject == null ) {
 			changedObject = waitForChange();
 		}
 		
@@ -60,10 +61,8 @@ public class CouchObjectChanges extends CouchObject{
 			URL url = new URL( getDbUrl() + "/_changes?since=" + lastSeq + "&filter=" + application + "/" + filter );
 			changesQueue = loadJSONObject( url );
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -72,59 +71,22 @@ public class CouchObjectChanges extends CouchObject{
 	}
 	
 	private JSONObject waitForChange() {
+		JSONObject change = null;
 		try {
+			do {
 			// I just want one change. If I choose more, when I will wait longer. 
-			URL url = new URL( getDbUrl() + "/changes?feed=continuous&limit=1&since=" + lastSeq + "&filter=" + application + "/" + filter );
-			changesQueue = loadJSONObject( url );
+			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + lastSeq + "&filter=" + application + "/" + filter );
+			change = loadJSONObject( url );
+			} while( change == null || change.has( "id" ) );
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return getChangeFromQueue();
+		return returnResult( change );
 	}
 	
-	/*private JSONObject privateChangedObject() {
-		JSONObject result = new JSONObject();
-		URL url;
-		
-		try {
-			//This URL will give me 1 relevant change
-			url = new URL( getDbUrl() + "/_changes?since=" + lastSeq + "&filter=" + application + "/" + filter );
-
-			changesQueue = loadJSONObject( url );
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		JSONArray resultArray = (JSONArray) changesQueue.get("results");
-		JSONObject firstResult = (JSONObject) resultArray.remove(0);
-		
-		lastSeq = firstResult.getInt( "seq" );
-		String changedDocument = firstResult.getString( "id" );
-		
-		try {
-			URL changedDocumentUrl = new URL( getDbUrl() + "/" + changedDocument );
-			result = loadJSONObject( changedDocumentUrl );
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return result;
-		
-	}
-	*/
 	private synchronized JSONObject returnResult( JSONObject change ) {
 		JSONObject result = null;
 		try {
@@ -134,13 +96,10 @@ public class CouchObjectChanges extends CouchObject{
 			URL changedDocumentUrl = new URL( getDbUrl() + "/" + documentId );
 			result = loadJSONObject( changedDocumentUrl );
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

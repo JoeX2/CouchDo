@@ -51,6 +51,7 @@ public class CouchObject {
 	}
 	
 	public JSONObject loadJSONObject( URL url ) throws java.io.FileNotFoundException {
+		System.out.println( "Request: " + url.toString() );
 		JSONObject json = new JSONObject();
 		try {
 			URLConnection con = url.openConnection();
