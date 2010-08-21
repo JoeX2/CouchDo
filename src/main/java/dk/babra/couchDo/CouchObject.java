@@ -1,12 +1,15 @@
 package dk.babra.couchDo;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -47,6 +50,16 @@ public class CouchObject {
 		}
 		
 		return ( JSONObject )JSONValue.parse( inLine );
+	}
+	
+	public JSONObject loadJSONObject( String url ) throws FileNotFoundException, MalformedURLException {
+		try {
+			return loadJSONObject( new URL( this.getDbUrl() + "/" + URLEncoder.encode( url, "UTF-8" ) ) );
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public JSONObject loadJSONObject( URL url ) throws java.io.FileNotFoundException {
