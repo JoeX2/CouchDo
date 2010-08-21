@@ -10,8 +10,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class CouchObjectChanges extends CouchObject{
 	private String filter;
@@ -46,12 +47,12 @@ public class CouchObjectChanges extends CouchObject{
 	}
 	
 	private synchronized JSONObject getChangeFromQueue() {
-		JSONArray resultArray = changesQueue.optJSONArray( "results" );
-		if ( resultArray == null ) {
+		JSONArray resultArray = ( JSONArray ) changesQueue.get( "results" );
+		if ( resultArray == null || resultArray.size() == 0 ) {
 			return null;
 		}
 		
-		JSONObject firstResult = resultArray.optJSONObject( 0 );
+		JSONObject firstResult = ( JSONObject ) resultArray.get( 0 );
 		if ( firstResult == null ) {
 			return null;
 		}
@@ -77,7 +78,7 @@ public class CouchObjectChanges extends CouchObject{
 	private JSONObject waitForChange() {
 		JSONObject change = null;
 		try {
-			while ( change == null || !change.has( "id" ) ) {
+			while ( change == null || !change.containsKey( "id" ) ) {
 			// I just want one change. If I choose more, when I will wait longer. 
 			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + lastSeq + "&filter=" + application + "/" + filter );
 			change = loadJSONObject( url, true );
@@ -94,9 +95,9 @@ public class CouchObjectChanges extends CouchObject{
 	private synchronized JSONObject returnResult( JSONObject change ) {
 		JSONObject result = null;
 		try {
-			lastSeq = change.getInt( "seq" );
+			lastSeq = Integer.parseInt( change.get( "seq" ).toString() );
 			
-			String documentId = URLEncoder.encode( change.getString( "id" ), "UTF-8" );
+			String documentId = URLEncoder.encode( change.get( "id" ).toString(), "UTF-8" );
 			URL changedDocumentUrl = new URL( getDbUrl() + "/" + documentId );
 			result = loadJSONObject( changedDocumentUrl );
 		} catch (MalformedURLException e) {
@@ -125,7 +126,7 @@ public class CouchObjectChanges extends CouchObject{
 
 			while( json == null ) {
 				String jsonString = reader.readLine();
-				json = JSONObject.fromObject( jsonString );
+				json = ( JSONObject ) JSONValue.parse( jsonString );
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

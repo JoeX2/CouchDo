@@ -8,7 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import net.sf.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class CouchObject {
 	private String dbUrl;
@@ -40,14 +41,12 @@ public class CouchObject {
 			inLine = in.readLine();
 			out.close();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return JSONObject.fromObject( inLine );
+		return ( JSONObject )JSONValue.parse( inLine );
 	}
 	
 	public JSONObject loadJSONObject( URL url ) throws java.io.FileNotFoundException {
@@ -62,15 +61,13 @@ public class CouchObject {
 			while( ( lastLine = reader.readLine() ) != null ) {
 				jsonString.append( lastLine );	
 			}
-			json = JSONObject.fromObject( jsonString.toString() );
+			json = ( JSONObject )JSONValue.parse( jsonString.toString() );
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch ( java.io.FileNotFoundException e ) {
 			throw e;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
