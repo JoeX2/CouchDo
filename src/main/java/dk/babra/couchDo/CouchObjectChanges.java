@@ -1,9 +1,13 @@
 package dk.babra.couchDo;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import net.sf.json.JSONArray;
@@ -73,11 +77,11 @@ public class CouchObjectChanges extends CouchObject{
 	private JSONObject waitForChange() {
 		JSONObject change = null;
 		try {
-			do {
+			while ( change == null || !change.has( "id" ) ) {
 			// I just want one change. If I choose more, when I will wait longer. 
 			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + lastSeq + "&filter=" + application + "/" + filter );
-			change = loadJSONObject( url );
-			} while( change == null || change.has( "id" ) );
+			change = loadJSONObject( url, true );
+			} 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -104,6 +108,30 @@ public class CouchObjectChanges extends CouchObject{
 		}
 		
 		return result;
+	}
+	
+	private JSONObject loadJSONObject( URL url, boolean oneLine ) throws FileNotFoundException {
+		if ( oneLine == false ) {
+			return loadJSONObject( url );
+		}
+		
+		System.out.println( "Request: " + url.toString() );
+		
+		JSONObject json = null;
+		URLConnection con;
+		try {
+			con = url.openConnection();
+			BufferedReader reader = new BufferedReader( new InputStreamReader( con.getInputStream() ) );
+
+			while( json == null ) {
+				String jsonString = reader.readLine();
+				json = JSONObject.fromObject( jsonString );
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return json;
 	}
 
 }
