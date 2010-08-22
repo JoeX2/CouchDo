@@ -16,13 +16,11 @@ public class App {
 			myTask.put( "message", "Started" );
 			ccc.saveJSONObject( myTask );
 			
-			int counter = 0;
-			while ( counter < 100 ) {
-				counter += 5;
-				sleep( 5 );
+			for( int counter = 0; counter < 100; counter += 5 ) {
 				myTask = ccc.loadJSONObject( "test-task" );
 				myTask.put( "message", counter + "% completed" );
 				ccc.saveJSONObject( myTask );
+				sleep( 5 );
 			}
 			
 			myTask = ccc.loadJSONObject( "test-task" );
