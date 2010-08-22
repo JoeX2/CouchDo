@@ -76,13 +76,14 @@ public class CouchObject {
 			}
 			json = ( JSONObject )JSONValue.parse( jsonString.toString() );
 
+			reader.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch ( java.io.FileNotFoundException e ) {
 			throw e;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		} 
 		
 		System.out.println( "Read JSONObject: " + json.toString() );
 		return json;

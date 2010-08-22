@@ -17,7 +17,7 @@ import org.json.simple.JSONValue;
 public class CouchObjectChanges extends CouchObject{
 	private String filter;
 	private String application;
-	private int lastSeq = 0;
+	private int sequenceNo = 0;
 	private volatile JSONObject changesQueue = new JSONObject(); //contains changes not returned yet
 
 	public CouchObjectChanges( String dbUrl, String application, String filter ) {
@@ -63,7 +63,7 @@ public class CouchObjectChanges extends CouchObject{
 	
 	private JSONObject getChangeFromDatabase() {
 		try {
-			URL url = new URL( getDbUrl() + "/_changes?since=" + lastSeq + "&filter=" + application + "/" + filter );
+			URL url = new URL( getDbUrl() + "/_changes?since=" + sequenceNo + "&filter=" + application + "/" + filter );
 			changesQueue = loadJSONObject( url );
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -80,7 +80,7 @@ public class CouchObjectChanges extends CouchObject{
 		try {
 			while ( change == null || !change.containsKey( "id" ) ) {
 			// I just want one change. If I choose more, when I will wait longer. 
-			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + lastSeq + "&filter=" + application + "/" + filter );
+			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
 			change = loadJSONObject( url, true );
 			} 
 		} catch (MalformedURLException e) {
@@ -95,7 +95,7 @@ public class CouchObjectChanges extends CouchObject{
 	private synchronized JSONObject returnResult( JSONObject change ) {
 		JSONObject result = null;
 		try {
-			lastSeq = Integer.parseInt( change.get( "seq" ).toString() );
+			sequenceNo = Integer.parseInt( change.get( "seq" ).toString() );
 			
 			String documentId = URLEncoder.encode( change.get( "id" ).toString(), "UTF-8" );
 			URL changedDocumentUrl = new URL( getDbUrl() + "/" + documentId );
@@ -128,11 +128,20 @@ public class CouchObjectChanges extends CouchObject{
 				String jsonString = reader.readLine();
 				json = ( JSONObject ) JSONValue.parse( jsonString );
 			}
+			
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		return json;
 	}
+	
+	int getSequenceNo() {
+		return sequenceNo;
+	}
 
+	void setSequenceNo(int sequenceNo) {
+		this.sequenceNo = sequenceNo;
+	}
 }
