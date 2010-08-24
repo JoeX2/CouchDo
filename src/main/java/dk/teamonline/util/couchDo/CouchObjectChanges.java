@@ -144,11 +144,11 @@ public class CouchObjectChanges extends CouchObject{
 		return json;
 	}
 	
-	int getSequenceNo() {
+	public int getSequenceNo() {
 		return sequenceNo;
 	}
 
-	void setSequenceNo(int sequenceNo) {
+	public void setSequenceNo(int sequenceNo) {
 		this.sequenceNo = sequenceNo;
 	}
 }
