@@ -3,7 +3,7 @@
 git clone git@github.com:JoeX2/CouchDo.git
 
 mvn install
-mvn exec:java -Dexec.mainClass=dk.babra.couchDo.App
+mvn exec:java -Dexec.mainClass=dk.teamonline.util.couchDo.App
 
 git commit
 git push
