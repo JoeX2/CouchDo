@@ -1,4 +1,4 @@
-package dk.babra.couchDo;
+package dk.teamonline.util.couchDo;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -27,6 +27,10 @@ public class CouchObjectChanges extends CouchObject{
 	}
 	
 	public JSONObject getChangedObject() {
+		return getChangedObject( false );
+	}
+	
+	public JSONObject getChangedObject( boolean acceptTimeout ) {
 		JSONObject changedObject;
 
 		//First check if we already knows about the next change
@@ -39,9 +43,9 @@ public class CouchObjectChanges extends CouchObject{
 		
 		//If both proves without result, wait for a change. 
 		//If the database returns with no change try again.
-		while ( changedObject == null ) {
-			changedObject = waitForChange();
-		}
+		do  {
+			changedObject = waitForChange( acceptTimeout );
+		} while( changedObject == null && acceptTimeout == false );
 		
 		return changedObject;
 	}
@@ -75,13 +79,16 @@ public class CouchObjectChanges extends CouchObject{
 		return getChangeFromQueue();
 	}
 	
-	private JSONObject waitForChange() {
+	private JSONObject waitForChange( boolean acceptTimeout ) {
 		JSONObject change = null;
 		try {
 			while ( change == null || !change.containsKey( "id" ) ) {
-			// I just want one change. If I choose more, when I will wait longer. 
-			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
-			change = loadJSONObject( url, true );
+				// I just want one change. If I choose more, when I will wait longer. 
+				URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
+				change = loadJSONObject( url, true );
+				if ( acceptTimeout == true && change == null ) {
+					return null; 
+				}
 			} 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

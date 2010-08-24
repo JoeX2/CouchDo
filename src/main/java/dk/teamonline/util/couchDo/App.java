@@ -1,4 +1,4 @@
-package dk.babra.couchDo;
+package dk.teamonline.util.couchDo;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
