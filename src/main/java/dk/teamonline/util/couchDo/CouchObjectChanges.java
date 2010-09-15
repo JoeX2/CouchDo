@@ -26,26 +26,31 @@ public class CouchObjectChanges extends CouchObject{
 		this.filter = filter;
 	}
 	
-	public JSONObject getChangedObject() {
-		return getChangedObject( false );
-	}
-	
+	/**
+	 * Use the fetch the next changed object from CouchDB.
+	 * @param acceptTimeout if true, the methods will return after at lost 60 seconds.
+	 * @return The Document as JSON Object. If acceptTimeout is true, it might return null.
+	 */
 	public JSONObject getChangedObject( boolean acceptTimeout ) {
 		JSONObject changedObject;
 
 		//First check if we already knows about the next change
 		changedObject = getChangeFromQueue();
+		if ( changedObject != null )  {
+			return changedObject;
+		}
 
 		//If we have not, get some changes from the database
-		if ( changedObject == null ) {
-			changedObject = getChangeFromDatabase();
+		changedObject = getChangeFromDatabase();
+		if ( changedObject != null ) {
+			return changedObject;
 		}
 		
 		//If both proves without result, wait for a change. 
-		//If the database returns with no change try again.
-		do  {
+		//If we accept timeouts, just goto return. Otherwise loop until waitForChange returns a real object ( not null )
+		do {
 			changedObject = waitForChange( acceptTimeout );
-		} while( changedObject == null && acceptTimeout == false );
+		} while ( changedObject == null || acceptTimeout );
 		
 		return changedObject;
 	}
@@ -82,24 +87,27 @@ public class CouchObjectChanges extends CouchObject{
 	private JSONObject waitForChange( boolean acceptTimeout ) {
 		JSONObject change = null;
 		try {
-			while ( change == null || !change.containsKey( "id" ) ) {
-				// I just want one change. If I choose more, when I will wait longer. 
-				URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
-				change = loadJSONObject( url, true );
-				if ( acceptTimeout == true && change == null ) {
-					return null; 
-				}
-			} 
+			// I just want one change. If I choose more, when I will wait longer. 
+			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
+			change = loadJSONObject( url, true );
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
+		// Tests if there are any results
+		// if not, save the last sequence number and return null. If we have one, return it
+		JSONArray resultArray = ( JSONArray ) change.get( "results" );
+		if ( resultArray.size() == 0 ) {
+			sequenceNo = Integer.parseInt( change.get( "last_seq" ).toString() );
+			return null;
+		}
+		
 		return returnResult( change );
 	}
 	
-	private synchronized JSONObject returnResult( JSONObject change ) {
+	private JSONObject returnResult( JSONObject change ) {
 		JSONObject result = null;
 		try {
 			sequenceNo = Integer.parseInt( change.get( "seq" ).toString() );
