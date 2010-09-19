@@ -16,14 +16,17 @@ import org.json.simple.JSONValue;
 
 public class CouchObjectChanges extends CouchObject{
 	private String filter;
-	private String application;
 	private int sequenceNo = 0;
 	private volatile JSONObject changesQueue = new JSONObject(); //contains changes not returned yet
 
-	public CouchObjectChanges( String dbUrl, String application, String filter ) {
+	public CouchObjectChanges( URL dbUrl ) {
+		super( dbUrl );
+		this.filter = "";
+	}
+	
+	public CouchObjectChanges( URL dbUrl, String application, String filter ) {
 		super(dbUrl);
-		this.application = application;
-		this.filter = filter;
+		this.filter = application + "/" + filter;
 	}
 	
 	/**
@@ -72,7 +75,7 @@ public class CouchObjectChanges extends CouchObject{
 	
 	private JSONObject getChangeFromDatabase() {
 		try {
-			URL url = new URL( getDbUrl() + "/_changes?since=" + sequenceNo + "&filter=" + application + "/" + filter );
+			URL url = new URL( getDbUrl() + "/_changes?since=" + sequenceNo + "&filter=" + filter );
 			changesQueue = loadJSONObject( url );
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -88,7 +91,7 @@ public class CouchObjectChanges extends CouchObject{
 		JSONObject change = null;
 		try {
 			// I just want one change. If I choose more, when I will wait longer. 
-			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + application + "/" + filter );
+			URL url = new URL( getDbUrl() + "/_changes?feed=continuous&limit=1&since=" + sequenceNo + "&filter=" + filter );
 			change = loadJSONObject( url, true );
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -98,8 +101,8 @@ public class CouchObjectChanges extends CouchObject{
 		
 		// Tests if there are any results
 		// if not, save the last sequence number and return null. If we have one, return it
-		JSONArray resultArray = ( JSONArray ) change.get( "results" );
-		if ( resultArray.size() == 0 ) {
+		JSONArray changesArray = ( JSONArray ) change.get( "changes" );
+		if ( changesArray == null ) {
 			sequenceNo = Integer.parseInt( change.get( "last_seq" ).toString() );
 			return null;
 		}
@@ -109,8 +112,14 @@ public class CouchObjectChanges extends CouchObject{
 	
 	private JSONObject returnResult( JSONObject change ) {
 		JSONObject result = null;
+
+		sequenceNo = Integer.parseInt( change.get( "seq" ).toString() );
+		
+		if ( change.containsKey( "deleted" ) && change.get( "deleted" ).toString().equals( "true" ) ) {
+			return null;
+		}
+		
 		try {
-			sequenceNo = Integer.parseInt( change.get( "seq" ).toString() );
 			
 			String documentId = URLEncoder.encode( change.get( "id" ).toString(), "UTF-8" );
 			URL changedDocumentUrl = new URL( getDbUrl() + "/" + documentId );

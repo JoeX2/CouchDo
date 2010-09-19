@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,25 +16,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class CouchObject {
-	private String dbUrl;
+	private URL dbUrl;
 	
-	public CouchObject( String dbUrl ) {
+	public CouchObject( URL dbUrl ) {
 		this.dbUrl = dbUrl;
 	}
 	
-	String getDbUrl() {
+	URL getDbUrl() {
 		return dbUrl;
 	}
 
-	void setDbUrl(String dbUrl) {
-		this.dbUrl = dbUrl;
+	void setDbUrl(String dbUrl) throws MalformedURLException {
+		this.dbUrl = new URL( dbUrl );
 	}
 
 	public JSONObject saveJSONObject( JSONObject doc ) {
 		String inLine = "";
 		try {
-			URL url = new URL( dbUrl );
-			URLConnection con = url.openConnection();
+			URLConnection con = dbUrl.openConnection();
 			con.setDoOutput( true );
 			
 			OutputStreamWriter out = new OutputStreamWriter( con.getOutputStream() );
@@ -43,8 +43,7 @@ public class CouchObject {
 			BufferedReader in = new BufferedReader( new InputStreamReader( con.getInputStream() ) );
 			inLine = in.readLine();
 			out.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,4 +88,30 @@ public class CouchObject {
 		return json;
 	}
 
+	public JSONObject deleteJSOBObject( JSONObject doc ) {
+		String inLine = "";
+		try {
+			String id = doc.get( "_id" ).toString();
+			String rev = doc.get( "_rev" ).toString();
+			URL deleteUrl = new URL( dbUrl.toString() + "/" + URLEncoder.encode( id, "UTF-8" ) + "?rev=" + rev );
+			
+			HttpURLConnection con  = (HttpURLConnection)deleteUrl.openConnection();
+			con.setDoOutput( true );
+			con.setRequestMethod( "DELETE" );
+			con.setRequestProperty(
+				    "Content-Type", "application/x-www-form-urlencoded" );
+			con.connect();
+			
+			BufferedReader in = new BufferedReader( new InputStreamReader( con.getInputStream() ) );
+			inLine = in.readLine();
+			in.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println( "Delete JSONObject: " + doc.toString() );
+		return ( JSONObject )JSONValue.parse( inLine );
+	}
 }
