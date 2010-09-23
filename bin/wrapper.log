@@ -1,0 +1,69 @@
+FATAL  | wrapper  | 2010/09/23 15:33:52 | Unable to resolve the full path of the configuration file, wrapper-linux-x86-32.conf: No such file or directory
+FATAL  | wrapper  | 2010/09/23 15:34:19 | Unable to resolve the full path of the configuration file, console: No such file or directory
+STATUS | wrapper  | 2010/09/23 15:34:32 | --> Wrapper Started as Console
+STATUS | wrapper  | 2010/09/23 15:34:33 | Launching a JVM...
+INFO   | jvm 1    | 2010/09/23 15:34:33 | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+INFO   | jvm 1    | 2010/09/23 15:34:33 |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+INFO   | jvm 1    | 2010/09/23 15:34:33 | 
+INFO   | jvm 1    | 2010/09/23 15:34:33 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?since=0&filter=
+INFO   | jvm 1    | 2010/09/23 15:34:33 | Read JSONObject: {"last_seq":4,"results":[{"id":"77a0e646ac8e902e22452181ea000e72","seq":2,"deleted":true,"changes":[{"rev":"2-0535e74787027567f1478e5e5828ad21"}]},{"id":"77a0e646ac8e902e22452181ea000e80","seq":4,"deleted":true,"changes":[{"rev":"2-e3311312eb811b25706a3ae370983bf8"}]}]}
+INFO   | jvm 1    | 2010/09/23 15:34:33 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=2&filter=
+INFO   | jvm 1    | 2010/09/23 15:34:33 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=4&filter=
+STATUS | wrapper  | 2010/09/23 15:34:39 | INT trapped.  Shutting down.
+STATUS | wrapper  | 2010/09/23 15:34:40 | <-- Wrapper Stopped
+FATAL  | wrapper  | 2010/09/23 16:20:22 | Unable to resolve the full path of the configuration file, wrapper-linux-x86-32.conf: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:20:25 | Unable to resolve the full path of the configuration file, start: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:20:44 | Unable to resolve the full path of the configuration file, start: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:20:54 | Unable to resolve the full path of the configuration file, wrapper-linux-x86-32.conf: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:20:56 | Unable to resolve the full path of the configuration file, start: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:20:59 | Unable to resolve the full path of the configuration file, start: No such file or directory
+STATUS | wrapper  | 2010/09/23 16:21:05 | --> Wrapper Started as Console
+STATUS | wrapper  | 2010/09/23 16:21:06 | Launching a JVM...
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+INFO   | jvm 1    | 2010/09/23 16:21:06 |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+INFO   | jvm 1    | 2010/09/23 16:21:06 | 
+INFO   | jvm 1    | 2010/09/23 16:21:06 | 
+INFO   | jvm 1    | 2010/09/23 16:21:06 | WARNING - Unable to load the Wrapper's native library because none of the
+INFO   | jvm 1    | 2010/09/23 16:21:06 |           following files:
+INFO   | jvm 1    | 2010/09/23 16:21:06 |             libwrapper-linux-x86-64.so
+INFO   | jvm 1    | 2010/09/23 16:21:06 |             libwrapper.so
+INFO   | jvm 1    | 2010/09/23 16:21:06 |           could be located on the following java.library.path:
+INFO   | jvm 1    | 2010/09/23 16:21:06 |             /home/joe/workspace/Downloadinator/bin/../lib
+INFO   | jvm 1    | 2010/09/23 16:21:06 |           Please see the documentation for the wrapper.java.library.path
+INFO   | jvm 1    | 2010/09/23 16:21:06 |           configuration property.
+INFO   | jvm 1    | 2010/09/23 16:21:06 |           System signals will not be handled correctly.
+INFO   | jvm 1    | 2010/09/23 16:21:06 | 
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?since=0&filter=
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Read JSONObject: {"last_seq":6,"results":[{"id":"77a0e646ac8e902e22452181ea000e72","seq":2,"deleted":true,"changes":[{"rev":"2-0535e74787027567f1478e5e5828ad21"}]},{"id":"77a0e646ac8e902e22452181ea000e80","seq":4,"deleted":true,"changes":[{"rev":"2-e3311312eb811b25706a3ae370983bf8"}]},{"id":"77a0e646ac8e902e22452181ea001d61","seq":6,"deleted":true,"changes":[{"rev":"2-a549220043d83ec6e71e18d0a3e03767"}]}]}
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=2&filter=
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=4&filter=
+INFO   | jvm 1    | 2010/09/23 16:21:06 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=6&filter=
+STATUS | wrapper  | 2010/09/23 16:21:22 | INT trapped.  Shutting down.
+INFO   | jvm 1    | 2010/09/23 16:21:22 | Wrapper Manager: Unable to unregister shutdown hook: java.lang.IllegalStateException: Shutdown in progress
+STATUS | wrapper  | 2010/09/23 16:21:23 | <-- Wrapper Stopped
+FATAL  | wrapper  | 2010/09/23 16:22:27 | Unable to resolve the full path of the configuration file, wrapper-linux-x86-32.conf: No such file or directory
+FATAL  | wrapper  | 2010/09/23 16:22:29 | Unable to resolve the full path of the configuration file, wrapper-linux-x86-32.conf: No such file or directory
+STATUS | wrapper  | 2010/09/23 16:22:33 | --> Wrapper Started as Console
+STATUS | wrapper  | 2010/09/23 16:22:34 | Launching a JVM...
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+INFO   | jvm 1    | 2010/09/23 16:22:34 |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+INFO   | jvm 1    | 2010/09/23 16:22:34 | 
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?since=0&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Read JSONObject: {"last_seq":6,"results":[{"id":"77a0e646ac8e902e22452181ea000e72","seq":2,"deleted":true,"changes":[{"rev":"2-0535e74787027567f1478e5e5828ad21"}]},{"id":"77a0e646ac8e902e22452181ea000e80","seq":4,"deleted":true,"changes":[{"rev":"2-e3311312eb811b25706a3ae370983bf8"}]},{"id":"77a0e646ac8e902e22452181ea001d61","seq":6,"deleted":true,"changes":[{"rev":"2-a549220043d83ec6e71e18d0a3e03767"}]}]}
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=2&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=4&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:34 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=6&filter=
+STATUS | wrapper  | 2010/09/23 16:22:37 | INT trapped.  Shutting down.
+STATUS | wrapper  | 2010/09/23 16:22:38 | <-- Wrapper Stopped
+STATUS | wrapper  | 2010/09/23 16:22:43 | --> Wrapper Started as Console
+STATUS | wrapper  | 2010/09/23 16:22:43 | Launching a JVM...
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+INFO   | jvm 1    | 2010/09/23 16:22:44 |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+INFO   | jvm 1    | 2010/09/23 16:22:44 | 
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?since=0&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Read JSONObject: {"last_seq":6,"results":[{"id":"77a0e646ac8e902e22452181ea000e72","seq":2,"deleted":true,"changes":[{"rev":"2-0535e74787027567f1478e5e5828ad21"}]},{"id":"77a0e646ac8e902e22452181ea000e80","seq":4,"deleted":true,"changes":[{"rev":"2-e3311312eb811b25706a3ae370983bf8"}]},{"id":"77a0e646ac8e902e22452181ea001d61","seq":6,"deleted":true,"changes":[{"rev":"2-a549220043d83ec6e71e18d0a3e03767"}]}]}
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=2&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=4&filter=
+INFO   | jvm 1    | 2010/09/23 16:22:44 | Request: http://bosted204.bosted.net:5984/downloadinator/_changes?feed=continuous&limit=1&since=6&filter=
+STATUS | wrapper  | 2010/09/23 16:22:47 | INT trapped.  Shutting down.
+STATUS | wrapper  | 2010/09/23 16:22:48 | <-- Wrapper Stopped

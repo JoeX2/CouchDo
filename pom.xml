@@ -1,14 +1,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>dk.babra.couchDo</groupId>
-  <artifactId>couchDo</artifactId>
+  <groupId>dk.teamonline.independedServer.downloadinator</groupId>
+  <artifactId>Downloadinator</artifactId>
   <version>0.1</version>
-  <name>Couch Do</name>
+  <name>Downloadinator</name>
+  <build>
+  	<plugins>
+  		<plugin>
+  			<artifactId>maven-assembly-plugin</artifactId>
+  			<version>2.2-beta-5</version>
+  			<configuration>
+  				<descriptorRefs>
+  					<descriptorRef>jar-with-dependencies</descriptorRef>
+  				</descriptorRefs>
+  				<archive>
+  					<manifest>
+  						<mainClass>dk.teamonline.independedServer.downloadinator.Download</mainClass>
+  					</manifest>
+  				</archive>
+  			</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
   <dependencies>
     <dependency>
     	<groupId>com.googlecode.json-simple</groupId>
     	<artifactId>json-simple</artifactId>
     	<version>1.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>tanukisoft</groupId>
+    	<artifactId>wrapper</artifactId>
+    	<version>3.2.3</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>

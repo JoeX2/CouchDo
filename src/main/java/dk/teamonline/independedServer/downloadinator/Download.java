@@ -1,4 +1,4 @@
-package dk.teamonline.util.couchDo;
+package dk.teamonline.independedServer.downloadinator;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -10,10 +10,12 @@ import java.net.URL;
 
 import org.json.simple.JSONObject;
 
-public class App {
+import dk.teamonline.util.couchDo.CouchObjectChanges;
+
+public class Download {
 
 	public static void main(String[] args) throws FileNotFoundException, MalformedURLException {
-		URL couchDBAddress = new URL( "http://192.168.3.1:5984/downloadinator" );
+		URL couchDBAddress = new URL( "http://bosted204.bosted.net:5984/downloadinator" );
 		CouchObjectChanges ccc = new CouchObjectChanges( couchDBAddress );
 		
 		while( true) {
@@ -23,7 +25,10 @@ public class App {
 			if (    changedObject.containsKey( "type" ) &&
 					changedObject.containsKey( "filename" ) &&
 					changedObject.containsKey( "url" ) &&
-					( "download".equals( changedObject.get( "type" ) ) )
+					( 
+							( "download".equals( changedObject.get( "type" ) ) ) ||
+							( "download".equals( changedObject.get( "type" ) ) ) 
+					) 
 			   ) {
 				// It is. Start downloading
 				URL inputUrl = new URL( changedObject.get( "url" ).toString() );
@@ -55,18 +60,4 @@ public class App {
 		
 		return false;
 	}
-	
-	
-	
-	@SuppressWarnings({ "unused", "static-access" })
-	private static void sleep( int time ) {
-		try {
-			Thread.currentThread().sleep( time * 1000 );
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 }
