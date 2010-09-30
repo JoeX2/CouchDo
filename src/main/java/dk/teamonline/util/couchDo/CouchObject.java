@@ -34,6 +34,7 @@ public class CouchObject {
 		String inLine = "";
 		try {
 			URLConnection con = dbUrl.openConnection();
+			con.setRequestProperty("Content-Type", "application/json; charset=iso-8859-1");
 			con.setDoOutput( true );
 			
 			OutputStreamWriter out = new OutputStreamWriter( con.getOutputStream() );
