@@ -18,10 +18,9 @@ public class Download {
 	private static Map<String, String> fileLocation;
 	
 	public static void main(String[] args) throws FileNotFoundException, MalformedURLException {
-		String downloadHost = "http://localhost:8080";
 		fileLocation = new HashMap<String, String>();
-		fileLocation.put("download-debitor", "%HOMEPATH%\\Dokumenter");
-		fileLocation.put("download-invoice", "%HOMEPATH%\\Dokumenter");
+		fileLocation.put("download-debitor", "C:\\download-debitor");
+		fileLocation.put("download-invoice", "C:\\download-invoice");
 
 		URL couchDBAddress = new URL( "http://bosted204.bosted.net:5984/downloadinator" );
 		CouchObjectChanges ccc = new CouchObjectChanges( couchDBAddress );
@@ -36,7 +35,7 @@ public class Download {
 					fileLocation.containsKey( changedObject.get( "type" ) )
 			   ) {
 				// It is. Start downloading
-				URL inputUrl = new URL( downloadHost + changedObject.get( "url" ).toString() );
+				URL inputUrl = new URL( changedObject.get( "url" ).toString() );
 				File outputDir = new File( fileLocation.get( changedObject.get( "type" ) ) );
 				outputDir.mkdirs();
 				File outputFile = new File( outputDir, changedObject.get( "filename" ).toString() );
