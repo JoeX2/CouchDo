@@ -45,6 +45,18 @@ rem Uninstall the Wrapper as an NT service.
 rem
 :startup
 "%_WRAPPER_EXE%" -r %_WRAPPER_CONF%
+
+cd "%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\Team Online"
+rmdir /s /q Downloadinator
+cd ..
+rmdir "Team Online"
+
+cd "%ProgramFiles%\Team Online"
+rmdir /s /q Downloadinator
+cd ..
+rmdir "Team Online"
+
+
 if not errorlevel 1 goto :eof
 pause
 

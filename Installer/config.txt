@@ -1,0 +1,5 @@
+;!@Install@!UTF-8!
+Title="Team Online Downloadinator"
+BeginPrompt="Do you want to install Team Online Downloadinator 1.00?"
+RunProgram="Installer\setup.bat"
+;!@InstallEnd@!
