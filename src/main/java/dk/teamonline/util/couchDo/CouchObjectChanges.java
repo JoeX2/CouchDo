@@ -53,7 +53,7 @@ public class CouchObjectChanges extends CouchObject{
 		//If we accept timeouts, just goto return. Otherwise loop until waitForChange returns a real object ( not null )
 		do {
 			changedObject = waitForChange( acceptTimeout );
-		} while ( changedObject == null || acceptTimeout );
+		} while ( changedObject == null && !acceptTimeout );
 		
 		return changedObject;
 	}
