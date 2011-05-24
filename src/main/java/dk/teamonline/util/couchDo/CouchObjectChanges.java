@@ -101,7 +101,10 @@ public class CouchObjectChanges extends CouchObject{
 		
 		// Tests if there are any results
 		// if not, save the last sequence number and return null. If we have one, return it
-		JSONArray changesArray = ( JSONArray ) change.get( "changes" );
+		JSONArray changesArray = null;
+		if ( changes != null ) {
+			changesArray = ( JSONArray ) change.get( "changes" );
+		}
 		if ( changesArray == null ) {
 			sequenceNo = Integer.parseInt( change.get( "last_seq" ).toString() );
 			return null;
