@@ -81,7 +81,7 @@ public class CouchObject {
 			e.printStackTrace();
 		} catch ( java.io.FileNotFoundException e ) {
 			throw e;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 		

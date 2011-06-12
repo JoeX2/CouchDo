@@ -157,7 +157,7 @@ public class CouchObjectChanges extends CouchObject{
 			}
 			
 			reader.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
